@@ -1,5 +1,0 @@
-Resources:
-  EventBus:
-    Type: AWS::Events::EventBus
-    Properties:
-      Name: eventbus-${self:provider.stage}

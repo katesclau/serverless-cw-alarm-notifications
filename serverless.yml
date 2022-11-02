@@ -72,12 +72,8 @@ functions:
         - functions/alarmNotifier.js
     events: 
       - eventBridge:
-          eventBus: { Fn::GetAtt: [EventBus, Name] }
-          schedule: rate(5 minutes)
+          schedule: rate(5, minutes)
 
 resources:
-  # EventBus
-  - ${file(./resources/eventbus/event-bus.yml)}
-
   # SNS
   - ${file(./resources/sns/alarm-topic.yml)}
