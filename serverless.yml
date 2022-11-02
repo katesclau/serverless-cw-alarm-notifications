@@ -1,0 +1,83 @@
+service: cw-alarm-notifications
+frameworkVersion: "3"
+useDotenv: true
+plugins:
+  - serverless-pseudo-parameters
+  - serverless-plugin-aws-alerts
+
+
+package:
+  patterns:
+    - "!node_modules/**"
+    - "!config*"
+    - "!yarn.lock"
+    - "!package.json"
+    - "!functions/**"
+    - "!README.md"
+    - "!scripts/**"
+    - "!package-lock.json"
+    - "!.esbuild"
+    - "!layers"
+    - "!resources"
+    - "!.eslintrc.js"
+    - "!__tests__"
+    - "!_build"
+    - "!resources"
+    - "!scripts"
+  
+provider:
+  name: aws
+  runtime: nodejs16.x
+  profile: serverless
+  stage: ${opt:stage, 'dev'}
+  region: us-west-2
+  environment: 
+    ACCOUNT_ID: ${env:ACCOUNT_ID, "#{AWS::AccountId}"}
+
+custom:
+  alerts:
+    # stages: # Optionally - select which stages to deploy alarms to
+    #   - production
+    #   - staging
+    dashboards: true
+    nameTemplate: $[functionName]-$[metricName]-Alarm # Optionally - naming template for alarms, can be overwritten in definitions
+    prefixTemplate: $[stackName] # Optionally - override the alarm name prefix
+
+    topics:
+      alarm: 
+        topic: 
+          Ref: AlarmTopic
+    alarms:
+      - functionThrottles
+      - functionErrors
+      - functionInvocations
+      - functionDuration
+
+functions:
+  alarm-notifier:
+    handler: functions/alarmNotifier.handler
+    name: alarm-notifier-${self:provider.stage}
+    timeout: 30
+    package:
+      individually: true
+      patterns:
+        - functions/alarmNotifier.js
+  alarm-trigger:
+    handler: functions/alarmTrigger.handler
+    name: alarm-trigger-${self:provider.stage}
+    timeout: 30
+    package:
+      individually: true
+      patterns:
+        - functions/alarmNotifier.js
+    events: 
+      - eventBridge:
+          eventBus: { Fn::GetAtt: [EventBus, Name] }
+          schedule: rate(5 minutes)
+
+resources:
+  # EventBus
+  - ${file(./resources/eventbus/event-bus.yml)}
+
+  # SNS
+  - ${file(./resources/sns/alarm-topic.yml)}
