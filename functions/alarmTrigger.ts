@@ -1,7 +1,9 @@
 export const handler = async () => {
-  await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, 500);
-  });
+  return {
+    statusCode: 500,
+    body: JSON.stringify({
+      error: "Sample Error",
+      description: `Occured @ ${Date.now().toLocaleString()}`,
+    }),
+  };
 };

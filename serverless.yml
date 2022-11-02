@@ -69,10 +69,11 @@ functions:
     package:
       individually: true
       patterns:
-        - functions/alarmNotifier.js
+        - functions/alarmTrigger.js
     events: 
       - eventBridge:
-          schedule: rate(5, minutes)
+        eventBus: default
+        schedule: rate(5 minutes)
 
 resources:
   # SNS
