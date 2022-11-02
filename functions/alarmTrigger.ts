@@ -1,3 +1,6 @@
 export const handler = async () => {
-  throw new Error(`Occured @ ${new Date().toISOString()}`);
+  if ((new Date()).getMinutes()%2) {
+    throw new Error(`Occured @ ${new Date().toISOString()}`);
+  }
+  return;
 };
