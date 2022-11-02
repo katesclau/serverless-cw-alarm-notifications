@@ -2,7 +2,8 @@ Resources:
   AlarmTopic:
     Type: AWS::SNS::Topic
     Properties:
-      DisplayName: alarm-topic
+      TopicName: alarm-topic-${self:provider.stage}
+      DisplayName: alarm-topic-${self:provider.stage}
       Subscription:
         - Endpoint: arn:aws:lambda:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:function:alarm-notifier-${self:provider.stage} 
           Protocol: LAMBDA

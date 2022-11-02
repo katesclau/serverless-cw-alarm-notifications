@@ -45,8 +45,7 @@ custom:
 
     topics:
       alarm: 
-        topic: 
-          Ref: AlarmTopic
+        topic: arn:aws:sns:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:alarm-topic-${self:provider.stage}
     alarms:
       - functionThrottles
       - functionErrors
@@ -62,6 +61,11 @@ functions:
       individually: true
       patterns:
         - functions/alarmNotifier.js
+    events:
+      - sns: 
+          arn: 
+            Ref: AlarmTopic
+          topicName: alarm-topic-${self:provider.stage}
   alarm-trigger:
     handler: functions/alarmTrigger.handler
     name: alarm-trigger-${self:provider.stage}
