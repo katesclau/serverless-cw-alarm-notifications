@@ -16,5 +16,35 @@
       "UnsubscribeUrl": "https://sns.us-west-2.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-west-2:338061115797:alarm-topic-dev:c2a3f38d-8975-404e-8319-fddc24b33d74",
       "MessageAttributes": {}
     }
+  },
+  "message": {
+    "AlarmName": "cw-alarm-notifications-dev-alarm-trigger-Errors-Alarm",
+    "AlarmDescription": null,
+    "AWSAccountId": "338061115797",
+    "AlarmConfigurationUpdatedTimestamp": "2022-11-05T08:36:23.580+0000",
+    "NewStateValue": "ALARM",
+    "NewStateReason": "Threshold Crossed: 1 out of the last 1 datapoints [1.0 (05/11/22 09:26:00)] was greater than or equal to the threshold (1.0) (minimum 1 datapoint for OK -> ALARM transition).",
+    "StateChangeTime": "2022-11-05T09:27:56.840+0000",
+    "Region": "US West (Oregon)",
+    "AlarmArn": "arn:aws:cloudwatch:us-west-2:338061115797:alarm:cw-alarm-notifications-dev-alarm-trigger-Errors-Alarm",
+    "OldStateValue": "OK",
+    "OKActions": [],
+    "AlarmActions": ["arn:aws:sns:us-west-2:338061115797:alarm-topic-dev"],
+    "InsufficientDataActions": [],
+    "Trigger": {
+      "MetricName": "Errors",
+      "Namespace": "AWS/Lambda",
+      "StatisticType": "Statistic",
+      "Statistic": "SUM",
+      "Unit": null,
+      "Dimensions": [],
+      "Period": 60,
+      "EvaluationPeriods": 1,
+      "DatapointsToAlarm": 1,
+      "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+      "Threshold": 1,
+      "TreatMissingData": "missing",
+      "EvaluateLowSampleCountPercentile": ""
+    }
   }
 }
