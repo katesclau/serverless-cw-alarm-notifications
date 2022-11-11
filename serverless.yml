@@ -44,8 +44,11 @@ custom:
     prefixTemplate: $[stackName] # Optionally - override the alarm name prefix
 
     topics:
-      alarm: 
-        topic: arn:aws:sns:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:alarm-topic-${self:provider.stage}
+      notify: 
+        ok:
+          topic: arn:aws:sns:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:alarm-topic-${self:provider.stage}
+        alarm:
+          topic: arn:aws:sns:${self:provider.region}:${self:provider.environment.ACCOUNT_ID}:alarm-topic-${self:provider.stage}
     # alarms:
     #   - functionThrottles
     #   - functionErrors
@@ -90,9 +93,9 @@ functions:
         comparisonOperator: GreaterThanOrEqualToThreshold
         treatMissingData: missing
         okActions:
-          - alarm
+          - notify
         alarmActions:
-          - alarm
+          - notify
 
 resources:
   # SNS
